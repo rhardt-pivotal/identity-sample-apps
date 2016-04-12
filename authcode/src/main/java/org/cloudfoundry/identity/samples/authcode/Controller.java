@@ -13,14 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @org.springframework.stereotype.Controller
 public class Controller {
     @Autowired
     private TodoService todoService;
-    @Value("${resourceServerUrl}")
+    @Value("${resourceServerUrl:placeholder}")
     private String resourceServerUrl;
 
     @RequestMapping(value = "/todo", method = GET)

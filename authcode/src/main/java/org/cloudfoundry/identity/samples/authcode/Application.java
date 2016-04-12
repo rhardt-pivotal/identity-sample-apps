@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.cloud.security.oauth2.sso.OAuth2SsoConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -65,6 +68,21 @@ public class Application {
     @PostConstruct
     public void init() {
         oauth2RestTemplate.setAccessTokenProvider(accessTokenProviderChain());
+    }
+
+    @Bean
+    public OAuth2SsoConfigurerAdapter oAuth2SsoConfigurerAdapter(SecurityProperties securityProperties) {
+        return new OAuth2SsoConfigurerAdapter() {
+            public void configure(HttpSecurity http) throws Exception {
+                http
+                    .headers()
+                    .frameOptions()
+                    .disable()
+                    .and()
+                    .csrf()
+                    .disable();
+            }
+        };
     }
 
     @Bean

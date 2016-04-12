@@ -21,7 +21,7 @@ public class TodoService {
     private String resourceServer;
 
     @Autowired
-    public TodoService(RestTemplate restTemplate, @Value("${resourceServerUrl}") String resourceServer) {
+    public TodoService(RestTemplate restTemplate, @Value("${resourceServerUrl:placeholder}") String resourceServer) {
         this.restTemplate = restTemplate;
         this.resourceServer = resourceServer;
     }
