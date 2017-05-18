@@ -18,7 +18,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.AccessTokenProvider;
 import org.springframework.security.oauth2.client.token.AccessTokenProviderChain;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsAccessTokenProvider;
@@ -60,8 +62,15 @@ public class Application {
     @Value("${security.oauth2.client.clientId:placeholder}")
     private String clientId;
 
-    @Autowired(required = false)
+    @Autowired
     private OAuth2RestTemplate oauth2RestTemplate;
+
+    @Bean
+    public OAuth2RestTemplate oauth2RestTemplate(OAuth2ProtectedResourceDetails oa2prd,
+                               OAuth2ClientContext oa2cc) {
+        return new OAuth2RestTemplate(oa2prd, oa2cc);
+    }
+
 
     @Autowired
     private ObjectMapper objectMapper;
